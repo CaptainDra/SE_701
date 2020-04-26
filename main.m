@@ -7,8 +7,8 @@ dt = 0.01;
 n = 1001; 
 t = linspace(0,T,n);
 
-L = 30; %ÕûÌå³¤¶È
-omega = 0:L; %µÈ·Ö
+L = 30; %æ•´ä½“é•¿åº¦
+omega = 0:L; %ç­‰åˆ†
 
 %target = [5,10,15];  
 
@@ -16,25 +16,30 @@ s_num = 1;
 s_init = linspace(0,L,s_num);
 u_init = zeros(1,s_num);
 target = [5,10,15,20,25];
-%target = 1:30;  %ÕâĞĞÌæ»»ÉÏÒ»ĞĞ¿ÉÒÔ¿ªÊ¼¿ìÀÖ±ä¿¨
+%target = 1:30;  %è¿™è¡Œæ›¿æ¢ä¸Šä¸€è¡Œå¯ä»¥å¼€å§‹å¿«ä¹å˜å¡
 f = figure(1);
 R0=zeros(1,L+1); %measure of uncertainty at each sampling point
-R0(target) = 1;%Ò»¿ªÊ¼ÏëÉè¼ÆµÄÖĞ¼äÓĞ¾àÀë
+R0(target) = 1;%ä¸€å¼€å§‹æƒ³è®¾è®¡çš„ä¸­é—´æœ‰è·ç¦»
 R = R0;
 A0=zeros(1,L+1); %complexity increasing rate
 A0(target) = 10; 
 rs= 4;
 J1 = 0; % J of R
-J2 = 0; % J of travel Õâ¸ö»¹Ã»ÓÃ
+J2 = 0; % J of travel è¿™ä¸ªè¿˜æ²¡ç”¨
 B= 100;
 J0 = 0;
 
-boundary = [max(min(target)-rs,0),min(max(target)+rs,L)]; %0ÓëLÎª·ÀÖ¹¹ıĞ¡¹ı´ó,µ«»¹Ã»ÓÃÉÏ
+boundary = [max(min(target)-rs,0),min(max(target)+rs,L)]; %0ä¸Lä¸ºé˜²æ­¢è¿‡å°è¿‡å¤§,ä½†è¿˜æ²¡ç”¨ä¸Š
 
-
-
+% R traj
+% M =[]; % video record
+R_est = repmat(R0,N,1);
+V_est = zeros(N, L + 1);
+R_est_h = R_est; R_h = R0;  % R traj record
+r_d = 1;
+limitRange = 1;
 %s = zeros(1,N); %initial position
-%s initialization Ï¹Ğ´µÄ
+%s initialization çå†™çš„
 s = [8];
 %s depends on u(velocity), which is 1 or -1
 
@@ -44,19 +49,37 @@ axis([0 L+2 0 5]);
 %hold on;
 
 
-%uµÈÓÚÕı¸º1£¬ÅĞ¶ÏÒÀ¾İÊÇlambda£¬lambda»¹Ã»Ğ´£¬ËùÒÔÓÃÁËrandÀ´´úÌæÅĞ¶¨ÒÀ¾İ
+%uç­‰äºæ­£è´Ÿ1ï¼Œåˆ¤æ–­ä¾æ®æ˜¯lambdaï¼Œlambdaè¿˜æ²¡å†™ï¼Œæ‰€ä»¥ç”¨äº†randæ¥ä»£æ›¿åˆ¤å®šä¾æ®
 lambdasn = zeros(1,length(s));
 lambdai = zeros(1,length(target));
 for i = t
+    for j = 1 : N
+        R_est(j,(target(abs(s(j)-target) < rs)+1)) = R(target(abs(s(j)-target) < rs)+1);
+    end
     P = s_position(omega,s,rs);
     R = R + A0.*dt; 
     R  = max(R - B.*P*dt,0);
+    [V,~] = densityGen(boundary(1), boundary(2),R,r_d);
     J1 = J1 + sum(R)*dt;
-    visualization(f,s,rs,R,J1,L,i+dt)
+    visualization(f,s,rs,R,J1,L,i+dt);
+    for j = 1 : N
+        P_est = s_position(omega,s(abs(s - s(j))<2*rs),rs);
+        R_est(j,:) = R_est(j,:) + A0.*dt;
+        R_est(j,:)  = max(R_est(j,:)  - B.*P_est*dt,0);
+        if limitRange ==1
+            [V_est(j,:) , ~] = densityGen(max(boundary(1),round(s(j) - 3*rs)), min(round(s(j)+3*rs),boundary(2)),R_est(j,:),r_d);
+        else
+            [V_est(j,:) , ~] = densityGen(boundary(1), boundary(2),R_est(j,:),r_d);
+        end
+    end
+    u = fakeu(s,V_est,omega);
+    s = s + u;
+    %{
     [lambdasn, lambdai] = GetLambda(target,s,B,rs,lambdasn,lambdai,dt);
     for j = 1:N
         s(j) = s(j) - lambdasn(j)/abs(lambdasn(j));
     end
+    %}
 %{    
     for j = 1:N
         l = rand;
@@ -116,7 +139,7 @@ end
 
 function f = performGraphing(L,R0,sn,s)
     axis([0 L+2 0 5]);
-    increasingArr = [0.1,0.2,0.3,0.2,0.3,0.1,0.2,0.3,0.2,0.3,0.1,0.2,0.3,0.2,0.3,0.1,0.2,0.3,0.2,0.3,0.1,0.2,0.3,0.2,0.3,0.1,0.2,0.3,0.2,0.3];%Ó¦¸ÃÊÇ¹«Ê½6 ÔİÊ±Ìæ´ú
+    increasingArr = [0.1,0.2,0.3,0.2,0.3,0.1,0.2,0.3,0.2,0.3,0.1,0.2,0.3,0.2,0.3,0.1,0.2,0.3,0.2,0.3,0.1,0.2,0.3,0.2,0.3,0.1,0.2,0.3,0.2,0.3];%åº”è¯¥æ˜¯å…¬å¼6 æš‚æ—¶æ›¿ä»£
     for j = 1:L
         if j ~= sn
             R0(j) = R0(j) + increasingArr(j);
