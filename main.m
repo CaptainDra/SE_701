@@ -7,8 +7,8 @@ dt = 0.01;
 n = 1001; 
 t = linspace(0,T,n);
 
-L = 30; %整体长度
-omega = 0:L; %等分
+L = 30; %length for figure
+omega = 0:L; %divide
 
 %target = [5,10,15];  
 
@@ -16,20 +16,20 @@ s_num = 1;
 s_init = linspace(0,L,s_num);
 u_init = zeros(1,s_num);
 target = [5,10,15,20,25];
-%target = 1:30;  %这行替换上一行可以开始快乐变卡
+%target = 1:30;  %30 bar sample
 f = figure(1);
 R0=zeros(1,L+1); %measure of uncertainty at each sampling point
-R0(target) = 1;%一开始想设计的中间有距离
+R0(target) = 1;%initial of R
 R = R0;
 A0=zeros(1,L+1); %complexity increasing rate
 A0(target) = 10; 
 rs= 10;
 J1 = 0; % J of R
-J2 = 0; % J of travel 这个还没用
+J2 = 0; % J of travel no use for now
 B= 100;
 J0 = 0;
 
-boundary = [max(min(target)-rs,0),min(max(target)+rs,L)]; %0与L为防止过小过大,但还没用上
+boundary = [max(min(target)-rs,0),min(max(target)+rs,L)]; %boundary for V
 
 % R traj
 % M =[]; % video record
@@ -39,7 +39,7 @@ R_est_h = R_est; R_h = R0;  % R traj record
 r_d = 1;
 limitRange = 1;
 %s = zeros(1,N); %initial position
-%s initialization 瞎写的
+%s initialization 
 s = [8];
 %s depends on u(velocity), which is 1 or -1
 
@@ -49,7 +49,6 @@ axis([0 L+2 0 5]);
 %hold on;
 
 
-%u等于正负1，判断依据是lambda，lambda还没写，所以用了rand来代替判定依据
 lambdasn = zeros(1,length(s));
 lambdai = zeros(1,length(target));
 for i = t
