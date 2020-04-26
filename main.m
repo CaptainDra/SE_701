@@ -25,7 +25,7 @@ A0=zeros(1,L+1); %complexity increasing rate
 A0(target) = 10; 
 rs= 10;
 J1 = 0; % J of R
-J2 = 0; % J of travel no use for now
+J2 = 0; % J for current time
 B= 100;
 J0 = 0;
 
@@ -60,6 +60,7 @@ for i = t
     R  = max(R - B.*P*dt,0);
     [V,~] = densityGen(boundary(1), boundary(2),R,r_d);
     J1 = J1 + sum(R)*dt;
+    J2 = sum(R);
     visualization(f,s,rs,R,J1,L,i+dt);
     for j = 1 : N
         P_est = s_position(omega,s(abs(s - s(j))<2*rs),rs);
