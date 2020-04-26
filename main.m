@@ -52,6 +52,7 @@ s_path1 = zeros(1, T*100);
 s_path2 = zeros(1, T*100);
 s_path3 = zeros(1, T*100);
 s_path4 = zeros(1, T*100);
+cost = zeros(1, T*100);
 help = 0
 
 lambdasn = zeros(1,length(s));
@@ -78,6 +79,7 @@ for i = t
         end
     end
     help = help + 1;
+    cost(help) = J2;
     s_path1(help) = s(1);
     s_path2(help) = s(2);
     s_path3(help) = s(3);
@@ -106,6 +108,7 @@ for i = t
 %}
 end
 numericalOutput(s_path1, s_path2, s_path3, s_path4);
+costOutput(cost);
 
 J0 = J0 / T   %equation(7)
 
