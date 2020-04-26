@@ -1,4 +1,4 @@
-function visualization(f,s,rs,R,J,L,t)
+function visualization(f,s,rs,R,J1,J2,L,t)
 %ø… ”ªØ
 clf(f);
 axis off;
@@ -16,6 +16,7 @@ set(gca,'Xlim',[0,L],'XTick',0:5:L)
 set(gca,'Ylim',[0,30],'YTick',0:5:30)
 text (1,25,['t = ' num2str(t,'%0.2f\n')])
 text (1,23,['sum of R = ' num2str(sum(R),'%0.2f\n')])
-text (1,21,['J = ' num2str(J/t,'%0.2f\n')])
+text (1,21,['J = ' num2str(J1/t,'%0.2f\n')])
+text (1,19,['J = ' num2str(J2/t,'%0.2f\n')])
 hold off;
 drawnow
