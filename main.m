@@ -1,6 +1,6 @@
 clear;clc;
 close all
-N = 1; %assume there are five agents right now
+N = 2; %assume there are five agents right now
 
 T = 10;  %Time
 dt = 0.01;
@@ -15,8 +15,8 @@ omega = 0:L; %divide
 s_num = 1;
 s_init = linspace(0,L,s_num);
 u_init = zeros(1,s_num);
-target = [5,10,15,20,25];
-%target = 1:30;  %30 bar sample
+%target = [5,10,15,20,25];
+target = 1:30;  %30 bar sample
 f = figure(1);
 R0=zeros(1,L+1); %measure of uncertainty at each sampling point
 R0(target) = 1;%initial of R
@@ -40,7 +40,7 @@ r_d = 1;
 limitRange = 1;
 %s = zeros(1,N); %initial position
 %s initialization 
-s = [8];
+s = [8,16];
 %s depends on u(velocity), which is 1 or -1
 
 axis([0 L+2 0 5]);
@@ -61,7 +61,7 @@ for i = t
     [V,~] = densityGen(boundary(1), boundary(2),R,r_d);
     J1 = J1 + sum(R)*dt;
     J2 = sum(R);
-    visualization(f,s,rs,R,J1,L,i+dt);
+    visualization(f,s,rs,R,J1,J2,L,i+dt);
     for j = 1 : N
         P_est = s_position(omega,s(abs(s - s(j))<2*rs),rs);
         R_est(j,:) = R_est(j,:) + A0.*dt;
