@@ -1,6 +1,6 @@
 clear;clc;
 close all
-N = 2; %assume there are five agents right now
+N = 4; %assume there are five agents right now
 
 T = 10;  %Time
 dt = 0.01;
@@ -23,7 +23,8 @@ R0(target) = 1;%initial of R
 R = R0;
 A0=zeros(1,L+1); %complexity increasing rate
 A0(target) = 10; 
-rs= 10;
+A0 = randi([1 10],1,L+1);%random A
+rs= 4;
 J1 = 0; % J of R
 J2 = 0; % J for current time
 B= 100;
@@ -40,14 +41,18 @@ r_d = 1;
 limitRange = 1;
 %s = zeros(1,N); %initial position
 %s initialization 
-s = [8,16];
+s = [1,9,17,25];
 %s depends on u(velocity), which is 1 or -1
 
 axis([0 L+2 0 5]);
 gra = bar(R0);
 axis([0 L+2 0 5]);
 %hold on;
-
+s_path1 = zeros(1, T*100);
+s_path2 = zeros(1, T*100);
+s_path3 = zeros(1, T*100);
+s_path4 = zeros(1, T*100);
+help = 0
 
 lambdasn = zeros(1,length(s));
 lambdai = zeros(1,length(target));
@@ -72,6 +77,11 @@ for i = t
             [V_est(j,:) , ~] = densityGen(boundary(1), boundary(2),R_est(j,:),r_d);
         end
     end
+    help = help + 1;
+    s_path1(help) = s(1);
+    s_path2(help) = s(2);
+    s_path3(help) = s(3);
+    s_path4(help) = s(4);
     u = fakeu(s,V_est,omega);
     s = s + u;
     %{
@@ -95,6 +105,7 @@ for i = t
     J0 = J0 + sumR;
 %}
 end
+numericalOutput(s_path1, s_path2, s_path3, s_path4);
 
 J0 = J0 / T   %equation(7)
 
