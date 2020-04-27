@@ -1,6 +1,5 @@
 # SE 701 Term Project
-
-An Optimal Control Approach to the Multi-Agent Persistent Monitoring Problem
+**An Optimal Control Approach to the Multi-Agent Persistent Monitoring Problem**
 
 ## Background 
 From the introduction of concepts to the appearance of solid robots, robot technology has always been a hot research topic and an important development trend of future science and technology. Nowadays, robot technology is widely used in storage, logistics, industrial automation, military and many other fields. In order to accomplish a certain task in these fields, especially to solve some special tasks with distributed space or time, the robot system must have high efficiency and stability. It is obviously unwise to combine the complex function configuration with a robot, so the multi robot system becomes the research core. In short, it is to cooperate with multiple robots to complete a series of efficient tasks.
