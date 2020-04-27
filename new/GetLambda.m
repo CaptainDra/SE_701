@@ -17,7 +17,7 @@ for i = 1:length(target)
 end
 for i = 1:length(target)
     for j = 1:length(s)
-        if i >= (j - 1) * range && i <= j * range
+        if i > (j - 1) * range && i < j * range
             lambdasndot(j) = lambdasndot(j) + lambdai(i) * abs(target(i)-s(j))*B/rs*(target(i)-s(j));
         end
     end
@@ -25,4 +25,3 @@ end
 for j = 1:length(s)
     lambdasn(j) = lambdasn(j) + lambdasndot(j) * dt;
 end
-
