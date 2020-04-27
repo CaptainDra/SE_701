@@ -19,6 +19,14 @@ In the theory of optimal control, we use Pontryagin's maximum principle to find 
 
 Perturbation analysis is a technique to accelerate the experimental process of discrete event simulation models. This makes it possible to derive sensitivity estimates from a computer performing a simulation model. Infinitesimal perturbation analysis (IPA) is a kind of algorithm in perturbation analysis. In this paper, the technology and algorithm of infinitesimal disturbance analysis in simulation are studied. In this paper, various algorithms are discussed in detail, and the implementation problems are discussed. Finally, the experimental results of the serial transmission line are given. The results of this paper show that IPA can be easily implemented with Siman and other general simulation languages for a simple system. Unfortunately, for any given system, parameter, or performance metric, the algorithms used to generate gradients may differ. In addition, there is no algorithm for more complex problems. This problem hinders the possibility of integrating IPA into general simulation language.
 
+## Result
+
+### Optimized path and corresponding cost for system with two agents
+<img src="Result_DoubleAgent.png" width="75%" >
+
+### Optimized path and corresponding cost for system with multiple agents
+<img src="Result_MultiAgent.png" width="80%">
+
 ## Reference
 
 [1] C. G. Cassandras, X. Lin and X. Ding, "An Optimal Control Approach to the Multi-Agent Persistent Monitoring Problem," in IEEE Transactions on Automatic Control, vol. 58, no. 4, pp. 947-961, April 2013.
