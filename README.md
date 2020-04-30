@@ -12,6 +12,8 @@ To simulate the persistent monitoring problem, two crucial aspects are necessary
 
 <img src="Problem_Description.png" width="75%">
 
+<img src="QueueSystem.png" width="50%">
+
 ## Method
 
 In the theory of optimal control, we use Pontryagin's maximum principle to find the best possible control to transfer a dynamic system from one state to another, especially when there are state or input control constraints. It points out that any optimal control and optimal state trajectory must solve the Hamiltonian system, which is a two-point boundary value problem, plus a maximum condition of Hamiltonian. Under some convexity conditions of objective function and constraint function, these necessary conditions are sufficient.
